@@ -1,0 +1,65 @@
+name: VPS GITHUB TAILSCALE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Runner:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Base Setup
+        run: |
+          sudo hostnamectl set-hostname ubuntuh
+          sudo timedatectl set-timezone Asia/Jakarta
+          sudo apt-get update
+          sudo apt-get install -y openssh-server curl wget htop tmux screen net-tools ca-certificates
+          sudo systemctl enable ssh
+          sudo systemctl restart ssh
+
+      - name: User Setup
+        run: |
+          sudo useradd -m -s /bin/bash bltokdev || true
+          echo "bltokdev:bltok1234" | sudo chpasswd
+          sudo usermod -aG sudo bltokdev
+          echo "bltokdev ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/bltokdev
+          sudo chmod 440 /etc/sudoers.d/bltokdev
+
+      - name: SSH Config
+        run: |
+          sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+          sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+          sudo sed -i 's/^#\?UsePAM.*/UsePAM yes/' /etc/ssh/sshd_config
+          sudo systemctl restart ssh
+
+      - name: Shell Prompt
+        run: |
+          echo 'export PS1="\u@\h \$ "' | sudo tee -a /etc/profile
+
+      - name: Install Tailscale
+        run: |
+          curl -fsSL https://tailscale.com/install.sh | sh
+
+      - name: Connect Tailscale
+        env:
+          TAILSCALE_AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
+        run: |
+          sudo tailscale up --authkey="$TAILSCALE_AUTHKEY" --hostname="BLTOK-VPS-ID" --reset
+
+      - name: Show VPS Data
+        run: |
+          ip=$(sudo tailscale ip -4 | head -n 1)
+          echo ""
+          echo "VPS DATA"
+          echo ""
+          echo "IP ADDRESS : $ip"
+          echo "USERNAME   : bltokdev"
+          echo "PASSWORD   : bltok1234"
+          echo ""
+
+      - name: Keep Alive
+        run: |
+          while true; do
+            sleep 300
+          done
