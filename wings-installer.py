@@ -117,16 +117,15 @@ def main():
     run(["/usr/local/bin/wings", "configure", "--panel-url", panel_url, "--token", token, "--node", node_id], cwd="/etc/pterodactyl")
     run(["systemctl", "restart", "wings"])
 
+    tsip = detect_tailscale_ip()
+    log_url = f"http://{tsip}" if tsip else panel_url
+
     print("")
-    print("Wings selesai")
-    print(f"Panel URL : {panel_url}")
-    print(f"Node ID   : {node_id}")
-    try:
-        tsip = detect_tailscale_ip()
-        if tsip:
-            print(f"IP TS     : {tsip}")
-    except Exception:
-        pass
+    print("Penginstalan wings berhasil!!")
+    print("")
+    print(f"LOG : {log_url}")
+    print("")
+    print("by @bltok-develemper")
     print("")
 
 if __name__ == "__main__":
