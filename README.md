@@ -1,1 +1,11 @@
-*VPS GRATIS BOLO*
+**VPS JOS JIS BOLO**
+
+Auto installer panelnya :
+```bash
+wget -O pterodactly-installer.py https://raw.githubusercontent.com/acckakawkk/vps-on-github/refs/heads/main/pterodactly-installer.py && sudo python pterodactly-installer.py
+
+Auto install wingsnya :
+
+wget -O wings-installer.py https://raw.githubusercontent.com/acckakawkk/vps-on-github/refs/heads/main/wings-installer.py && sudo python wings-installer.py
+
+swlamat mncoba😹
