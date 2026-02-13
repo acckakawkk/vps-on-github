@@ -117,6 +117,7 @@ def main():
 
     set_env_kv(env_path, "APP_URL", app_url)
     set_env_kv(env_path, "APP_TIMEZONE", timezone)
+    set_env_kv(env_path, "APP_ENVIRONMENT_ONLY", "false")
     set_env_kv(env_path, "DB_HOST", "127.0.0.1")
     set_env_kv(env_path, "DB_DATABASE", db_name)
     set_env_kv(env_path, "DB_USERNAME", db_user)
@@ -191,9 +192,14 @@ WantedBy=multi-user.target
     run(["systemctl", "enable", "--now", "pteroq.service"])
 
     print("")
-    print(f"Penginstalan panel selesai, Akses di : {app_url}")
+    print("BERHASIL MENGINSTAL PANEL :")
     print("")
-    print(f"USERNAME : {panel_user} PASSWORD : {panel_pass} EMAIL : {panel_email}")
+    print(f"USER : {panel_user}")
+    print(f"PASS : {panel_pass}")
+    print(f"IMEL : {panel_email}")
+    print(f"LOG  : {app_url}")
+    print("")
+    print("by @bltok-develemper")
     print("")
 
 if __name__ == "__main__":
